@@ -1,26 +1,8 @@
-"""
-Operations Research Multi-Agent System
-======================================
-Four specialist agents + one coordinator agent:
-
-  1. NorthWestCornerAgent   - Transportation IBFS via North-West Corner Rule
-  2. LeastCostAgent         - Transportation IBFS via Least Cost (Matrix Minima) Method
-  3. VogelAgent             - Transportation IBFS via Vogel's Approximation Method (VAM)
-  4. SchedulingAgent        - Job sequencing via Johnson's Rule (n jobs, 2 or 3 machines)
-  5. CoordinatorAgent       - Perceives the problem, routes it to the right agent(s),
-                              compares transportation results, and reports the best plan.
-
-Every agent follows the classic agent loop:  perceive() -> decide()/act() -> report()
-Pure Python, no external dependencies. Run:  python or_agents.py
-"""
-
 from abc import ABC, abstractmethod
 from copy import deepcopy
 
 
-# ---------------------------------------------------------------------------
 # Base agent
-# ---------------------------------------------------------------------------
 class Agent(ABC):
     def __init__(self, name):
         self.name = name
@@ -52,9 +34,7 @@ class Agent(ABC):
             print(f"  Step {i:>2}: {line}")
 
 
-# ---------------------------------------------------------------------------
 # Transportation base agent (shared logic for NWC, LCM, VAM)
-# ---------------------------------------------------------------------------
 class TransportationAgent(Agent):
     method = "Transportation"
 
@@ -146,9 +126,7 @@ class NorthWestCornerAgent(TransportationAgent):
         self.finish(alloc)
 
 
-# ---------------------------------------------------------------------------
 # Agent 2: Least Cost Method
-# ---------------------------------------------------------------------------
 class LeastCostAgent(TransportationAgent):
     method = "Least Cost"
 
@@ -172,9 +150,7 @@ class LeastCostAgent(TransportationAgent):
         self.finish(alloc)
 
 
-# ---------------------------------------------------------------------------
 # Agent 3: Vogel's Approximation Method
-# ---------------------------------------------------------------------------
 class VogelAgent(TransportationAgent):
     method = "Vogel's Approximation"
 
@@ -228,9 +204,7 @@ class VogelAgent(TransportationAgent):
         self.finish(alloc)
 
 
-# ---------------------------------------------------------------------------
 # Agent 4: Scheduling (Johnson's Rule)
-# ---------------------------------------------------------------------------
 class SchedulingAgent(Agent):
     """
     Johnson's Rule for n jobs through 2 machines (M1 -> M2).
@@ -306,9 +280,7 @@ class SchedulingAgent(Agent):
         print(f"  >> Makespan = {r['makespan']}")
 
 
-# ---------------------------------------------------------------------------
 # Agent 5: Coordinator
-# ---------------------------------------------------------------------------
 class CoordinatorAgent:
     def __init__(self):
         self.transport_agents = {
@@ -342,9 +314,7 @@ class CoordinatorAgent:
         return results
 
 
-# ---------------------------------------------------------------------------
 # Demo
-# ---------------------------------------------------------------------------
 if __name__ == "__main__":
     coordinator = CoordinatorAgent()
 
